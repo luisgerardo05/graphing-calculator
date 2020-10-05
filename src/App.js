@@ -1,9 +1,10 @@
 import React from 'react';
+import ChartP from './components/Chart';
 
 function App() {
   return (
     <div className="App">
-      <h1>graficadora</h1>
+      <ChartP/>
     </div>
   );
 }

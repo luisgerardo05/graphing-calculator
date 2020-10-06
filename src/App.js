@@ -1,6 +1,5 @@
-import React from 'react';
-import ChartP from './components/Chart';
-
+import React, {useState} from 'react';
+import Chart from './components/Chart';
 
 function App() {
   const [var1, setVar1] = useState(0);
@@ -27,6 +26,7 @@ function App() {
 
       setRestData(rest);
   }
+
   return (
     <div className="App">
         <div className="row justify-content-center">
@@ -102,9 +102,11 @@ function App() {
                             <button type="submit" className="btn font-weight-bold text-uppercase w-100 mt-3" 
                                 style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}}>Resolver</button>                            
                         </form>
+                        
                     </div>
                 </div>
             </div>
+            <Chart/>
         </div>
     </div>
   );

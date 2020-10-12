@@ -2,24 +2,22 @@ import React, {useState} from 'react';
 import Chart from './components/Chart';
 
 function App() {
-    const [objective, setObjective] = useState('');
-
-    const [var1, setVar1] = useState(0);
-    const [var2, setVar2] = useState(0);
-
+    const [objFunc, setObjFunc] = useState({x: 0, y: 0, type: ''});
+    
     const [restrictions, setRestrictions] = useState(false);
     const [restData, setRestData] = useState([{
-        num1: '', num2: '', sign: '', num3: ''
+        x1: 0, x2: 0, sign: '', c: 0
     }]);
 
-    var counter = 1;
+    const [alert, setAlert] = useState(false);
+    const [counter, setCounter] = useState({value: 1});
 
     const addRestriction = () => {
         setRestData([...restData, {
-            num1: '', num2: '', sign: '', num3: ''
+            x1: 0, x2: 0, sign: '', c: 0
         }]);
-        counter++;
-        console.log(counter);
+        
+        setCounter({value: counter.value+1});
     }
 
     const onChange = (idx, e) => {
@@ -27,6 +25,16 @@ function App() {
         rest[idx][e.target.name] = e.target.value;
 
         setRestData(rest);
+    }
+    
+    const onSubmit = (e) => {
+        e.preventDefault();
+
+        if(objFunc.x === '' || objFunc.y === '' || objFunc.type === ''){
+            setAlert(true);
+            return;
+        }
+        setAlert(false);
     }
 
     return (
@@ -37,33 +45,36 @@ function App() {
                         <div className="card-body">
                             <h2 className="text-center mb-4 font-weight-bold">Método Gráfico</h2>
 
-                            <hr/><form>
+                            <hr/><form onSubmit={onSubmit}>
+                                {alert  ? <div class="alert alert-danger" role="alert">Datos faltantes</div>
+                                        : null}
                                 <div className="form-group row justify-content-center">
+
                                     <label className="col-sm-2 col-form-label font-weight-bold">Función Objetivo</label>
 
                                     <div className="col-sm-2">
                                         <select className="custom-select"
-                                            value={objective} onChange={e => setObjective(e.target.value)}>
+                                            value={objFunc.type} onChange={e => setObjFunc({...objFunc, type: e.target.value})}>
                                             <option>Objetivo...</option> <option>MIN</option> <option>MAX</option>
                                         </select>
                                     </div>
 
                                     <label className="col-form-label font-weight-bold mr-3">Z</label>
-                                    <label className="col-form-label font-weight-bold mr-3">&#61;</label>
+                                    <label className="col-form-label font-weight-bold">&#61;</label>
 
+                                    <div className="col-sm-2">
+                                        <input type="number" className="form-control" placeholder="0"
+                                            value={objFunc.x} onChange={e => setObjFunc({...objFunc, x: e.target.value})}/>
+                                    </div>
                                     <label className="col-form-label font-weight-bold">X1</label>
+
+                                    <label className="col-form-label font-weight-bold ml-3">+</label>
+
                                     <div className="col-sm-2">
-                                        <input type="number" className="form-control" placeholder="Número"
-                                            name={var1} onChange={e => setVar1(Number(e.target.value))}/>
+                                        <input type="number" className="form-control" placeholder="0"
+                                            value={objFunc.y} onChange={e => setObjFunc({...objFunc, y: e.target.value})}/>
                                     </div>
-
-                                    <label className="col-form-label font-weight-bold mr-3">+</label>
-
                                     <label className="col-form-label font-weight-bold">X2</label>
-                                    <div className="col-sm-2">
-                                        <input type="number" className="form-control" placeholder="Número"
-                                            name={var2} onChange={e => setVar2(Number(e.target.value))}/>
-                                    </div>
                                 </div> <hr/>
                                 
                                 {restrictions === false ?
@@ -75,19 +86,19 @@ function App() {
                                         {restData.map((restriction, idx) => (
                                             <div key={idx}>
                                                 <div className="form-row">
+                                                    <div className="col-sm-2">
+                                                        <input type="number" className="form-control" placeholder="0"
+                                                            name="x1" value={restriction.x1} onChange={e => onChange(idx, e)}/>
+                                                    </div>
                                                     <label className="col-form-label font-weight-bold">X1</label>
+
+                                                    <label className="col-form-label font-weight-bold mr-2">+</label>
+
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="Número"
-                                                            name="num1" value={restriction.num1} onChange={e => onChange(idx, e)}/>
+                                                        <input type="number" className="form-control" placeholder="0"
+                                                            name="x2" value={restriction.x2} onChange={e => onChange(idx, e)}/>
                                                     </div>
-
-                                                    <label className="col-form-label font-weight-bold mr-3 ml-3">+</label>
-
                                                     <label className="col-form-label font-weight-bold">X2</label>
-                                                    <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="Número"
-                                                            name="num2" value={restriction.num2} onChange={e => onChange(idx, e)}/>
-                                                    </div>
 
                                                     <div className="col-sm-1">
                                                         <select className="custom-select"
@@ -97,18 +108,18 @@ function App() {
                                                     </div>
 
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="Número"
-                                                            name="num3" value={restriction.num3} onChange={e => onChange(idx, e)}/>
+                                                        <input type="number" className="form-control" placeholder="0"
+                                                            name="c" value={restriction.c} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                 </div> <hr/>
                                             </div>
                                         ))}
 
                                         <label className="col-form-label font-weight-bold">X1, X2 &#62;&#61; 0</label>
-
-                                        {counter <= 10 ?
+                                        
+                                        {counter.value <= 10 ?
                                             <button type="button" className="btn font-weight-bold text-uppercase w-100 mt-3" 
-                                                style={{backgroundColor:"#FFFFFF", color:"#7030A0", height:"40px"}} onClick={()=>addRestriction()}>Agregar Restricción</button>
+                                                style={{backgroundColor:"#FFFFFF", color:"#7030A0", height:"40px"}} onClick={()=>{addRestriction()}}>Agregar Restricción</button>
                                         : null}
                                         
                                     </div>
@@ -121,7 +132,8 @@ function App() {
                     </div>
                 </div>
                 <div id="chart">
-                    <Chart/>
+                    <Chart  objFunc={objFunc}
+                            restData={restData}/>
                 </div>
             </div>
         </div>

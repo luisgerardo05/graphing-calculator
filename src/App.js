@@ -2,19 +2,20 @@ import React, {useState} from 'react';
 import Chart from './components/Chart';
 
 function App() {
-    const [objFunc, setObjFunc] = useState({x: 0, y: 0, type: ''});
+    const [objFunc, setObjFunc] = useState({x: '', y: '', type: ''});
     
     const [restrictions, setRestrictions] = useState(false);
     const [restData, setRestData] = useState([{
-        x1: 0, x2: 0, sign: '', c: 0
+        x1: '', x2: '', sign: '', c: ''
     }]);
 
     const [alert, setAlert] = useState(false);
     const [counter, setCounter] = useState({value: 1});
+    const [solve, setSolve] = useState(false);
 
     const addRestriction = () => {
         setRestData([...restData, {
-            x1: 0, x2: 0, sign: '', c: 0
+            x1: '', x2: '', sign: '', c: ''
         }]);
         
         setCounter({value: counter.value+1});
@@ -35,6 +36,8 @@ function App() {
             return;
         }
         setAlert(false);
+
+        setSolve(true);
     }
 
     return (
@@ -79,7 +82,7 @@ function App() {
                                 
                                 {restrictions === false ?
                                     <button type="button" className="btn font-weight-bold text-uppercase w-100 mt-3" 
-                                        style={{backgroundColor:"#FFFFFF", color:"#7030A0", height:"40px"}} onClick={()=>setRestrictions(true)}>Agregar Restricción</button>
+                                        style={{backgroundColor:"#FFFFFF", color:"#000000", height:"40px"}} onClick={()=>setRestrictions(true)}>Agregar Restricción</button>
                                     : 
                                     <div id="restrictions">
                                         <label className="col-form-label font-weight-bold">Restricciones</label>
@@ -119,21 +122,23 @@ function App() {
                                         
                                         {counter.value <= 10 ?
                                             <button type="button" className="btn font-weight-bold text-uppercase w-100 mt-3" 
-                                                style={{backgroundColor:"#FFFFFF", color:"#7030A0", height:"40px"}} onClick={()=>{addRestriction()}}>Agregar Restricción</button>
+                                                style={{backgroundColor:"#FFFFFF", color:"#000000", height:"40px"}} onClick={()=>{addRestriction()}}>Agregar Restricción</button>
                                         : null}
                                         
                                     </div>
                                 }
                                 <button type="submit" className="btn font-weight-bold text-uppercase w-100 mt-3" 
-                                    style={{backgroundColor:"#7030A0", color:"#FFFFFF", height:"40px"}}>Resolver</button>                            
+                                    style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}}>Resolver</button>                            
                             </form>
                             
                         </div>
                     </div>
                 </div>
                 <div id="chart">
-                    <Chart  objFunc={objFunc}
-                            restData={restData}/>
+                    {solve  ? <Chart objFunc={objFunc}
+                                     restData={restData}/>
+                            : null}
+                    
                 </div>
             </div>
         </div>

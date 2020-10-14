@@ -4,7 +4,11 @@ import Axios from 'axios';
 
 class Chart extends Component {
   constructor(props){
-    super(props)
+    super(props);
+    this.state = {
+      solution: {x: 0, y: 0, z: 0, type: ''},
+      error: false
+    };
   }
 
   render () {
@@ -12,7 +16,7 @@ class Chart extends Component {
 
     let logicJS = async (board) => {
       board.suspendUpdate();
-      var obj = board.create("line", [[parseFloat(objFunc.x), 0], [0, parseFloat(objFunc.y)]], {strokeColor: "#42f551"});
+      // var obj = board.create("line", [[parseFloat(objFunc.x), 0], [0, parseFloat(objFunc.y)]], {strokeColor: "#42f551"});
       
       restData.forEach((element) => {
         var line = board.create("line", [-1 * parseFloat(element.c), parseFloat(element.x1), parseFloat(element.x2)], {strokeColor: "#000000"});
@@ -27,13 +31,13 @@ class Chart extends Component {
 
       const aux = restData.map((element) => {
         return{
-          x: element.x1, y: element.x2, sign: element.sign, z: element.c
+          x: parseFloat(element.x1), y: parseFloat(element.x2), sign: element.sign, z: parseFloat(element.c)
         }
       })
 
       const objective = {
-        x: objFunc.type === "MIN" ? objFunc.x : -1 * objFunc.x,
-        y: objFunc.type === "MIN" ? objFunc.y : -1 * objFunc.y,
+        x: objFunc.type === "MIN" ? parseFloat(objFunc.x) : -1 * parseFloat(objFunc.x),
+        y: objFunc.type === "MIN" ? parseFloat(objFunc.y) : -1 * parseFloat(objFunc.y),
       };
       const API_URL = "https://manmixserver.vercel.app";
 
@@ -51,36 +55,40 @@ class Chart extends Component {
           }
         );
 
-        /**Graficar la solucion y el punto */
         let resultado = data.result;
         let xfinal = data.resultX;
         let yfinal = data.resultY;
 
-        /**Redondear a dos decimales */
         resultado = Math.round(100 * resultado) / 100;
         xfinal = Math.round(100 * xfinal) / 100;
         yfinal = Math.round(100 * yfinal) / 100;
-        /**Linea final */
+
+        this.setState({solution: {
+          x: xfinal, 
+          y: yfinal, 
+          type: objFunc.type,
+          z: (objFunc.x * xfinal) + (objFunc.y * yfinal)
+        }});
+
         let finalLine = board.create(
           "line",
-          [-1 * resultado, objFunc.x, objFunc.y],
+          [-1 * resultado, parseFloat(objFunc.x), parseFloat(objFunc.y)],
           {
-            strokeColor: "#97266d",
+            strokeColor: "#42f551",
           }
         );
-        /**Punto de solucion */
+        
         let puntoSolucion = board.create("point", [xfinal, yfinal]);
 
       } catch (error) {
         if (error.response) {
-          console.log(error.response.data.message);
+          this.setState({error: true});
+          console.log("No hay solucion");
         } else {
           console.log("Ocurrió un error de comunicación, intentelo de nuevo");
         }
       }
 
-      console.log(objective);
-      console.log(restData);
       board.unsuspendUpdate();
     }
 
@@ -94,11 +102,14 @@ class Chart extends Component {
           }}
         />
 
-        <ul class="list-group">
-          <li class="list-group-item">Región de soluciones factibles</li>
-          <li class="list-group-item list-group-item-success">Función objetivo</li>
-          <li class="list-group-item list-group-item-danger">Solución<br/>x = <br/>y = </li>
-          <li class="list-group-item list-group-item-dark">Región de soluciones no factibles</li>
+        <ul className="list-group">
+          <li className="list-group-item">Región de soluciones factibles</li>
+          <li className="list-group-item list-group-item-success">
+            {this.state.error ? <p>No hay solucion</p>
+                              : <p>Solución<br/>{this.state.solution.type} Z = {this.state.solution.z}<br/>x1 = {this.state.solution.x}<br/>x2 = {this.state.solution.y}</p>
+            }
+          </li>
+          <li className="list-group-item list-group-item-dark">Región de soluciones no factibles</li>
         </ul>
       </div>
     )

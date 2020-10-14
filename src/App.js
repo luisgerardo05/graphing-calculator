@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import Chart from './components/Chart';
 
 function App() {
-    const [objFunc, setObjFunc] = useState({x: '', y: '', type: ''});
+    const [objFunc, setObjFunc] = useState({x: 0, y: 0, type: ''});
     
     const [restrictions, setRestrictions] = useState(false);
     const [restData, setRestData] = useState([{
-        x1: '', x2: '', sign: '', c: ''
+        x1: 0, x2: 0, sign: '', c: 0
     }]);
 
     const [alert, setAlert] = useState(false);
@@ -15,7 +15,7 @@ function App() {
 
     const addRestriction = () => {
         setRestData([...restData, {
-            x1: '', x2: '', sign: '', c: ''
+            x1: 0, x2: 0, sign: '', c: 0
         }]);
         
         setCounter({value: counter.value+1});
@@ -120,7 +120,7 @@ function App() {
 
                                         <label className="col-form-label font-weight-bold">X1, X2 &#62;&#61; 0</label>
                                         
-                                        {counter.value <= 10 ?
+                                        {counter.value < 10 ?
                                             <button type="button" className="btn font-weight-bold text-uppercase w-100 mt-3" 
                                                 style={{backgroundColor:"#FFFFFF", color:"#000000", height:"40px"}} onClick={()=>{addRestriction()}}>Agregar Restricción</button>
                                         : null}
@@ -138,8 +138,10 @@ function App() {
                     {solve  ? <Chart objFunc={objFunc}
                                      restData={restData}/>
                             : null}
-                    
+                    <button type="submit" className="btn font-weight-bold text-uppercase w-100 mt-3" 
+                        style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}} onClick={()=>{window.location.reload(false)}}>Borrar</button>
                 </div>
+                {/* window.location.reload(false); */}
             </div>
         </div>
     );

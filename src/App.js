@@ -2,20 +2,20 @@ import React, {useState} from 'react';
 import Chart from './components/Chart';
 
 function App() {
-    const [objFunc, setObjFunc] = useState({x: '', y: '', type: ''});
+    const [objFunc, setObjFunc] = useState({x: 0, y: 0, type: ''});
     
     const [restrictions, setRestrictions] = useState(false);
     const [restData, setRestData] = useState([{
-        x1: '', x2: '', sign: '', c: ''
+        x1: 0, x2: 0, sign: '', c: 0
     }]);
 
-    const [alert, setAlert] = useState(false);
+    const [alert, setAlert] = useState({data: false, rest: false});
     const [counter, setCounter] = useState({value: 1});
     const [solve, setSolve] = useState(false);
 
     const addRestriction = () => {
         setRestData([...restData, {
-            x1: '', x2: '', sign: '', c: ''
+            x1: 0, x2: 0, sign: '', c: 0
         }]);
         
         setCounter({value: counter.value+1});
@@ -31,10 +31,10 @@ function App() {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        if(objFunc.x === '' || objFunc.y === '' || objFunc.type === ''){
-            setAlert(true);
-            return;
-        }
+        if(objFunc.x === '' || objFunc.y === '' || objFunc.type === ''){ setAlert({data: true}); return; }
+
+        if(counter.value < 2){ setAlert({rest: true}); return; }
+
         setAlert(false);
 
         setSolve(true);
@@ -49,8 +49,11 @@ function App() {
                             <h2 className="text-center mb-4 font-weight-bold">Método Gráfico</h2>
 
                             <hr/><form onSubmit={onSubmit}>
-                                {alert  ? <div class="alert alert-danger" role="alert">Datos faltantes</div>
-                                        : null}
+                                {alert.data ? <div class="alert alert-danger" role="alert">Datos faltantes</div>
+                                            : null}
+                                {alert.rest ? <div class="alert alert-danger" role="alert">Error, mínimo deben ser 2 restricciones</div>
+                                            : null}
+
                                 <div className="form-group row justify-content-center">
 
                                     <label className="col-sm-2 col-form-label font-weight-bold">Función Objetivo</label>
@@ -66,7 +69,7 @@ function App() {
                                     <label className="col-form-label font-weight-bold">&#61;</label>
 
                                     <div className="col-sm-2">
-                                        <input type="number" className="form-control" placeholder="0"
+                                        <input type="number" className="form-control" placeholder="Número"
                                             value={objFunc.x} onChange={e => setObjFunc({...objFunc, x: e.target.value})}/>
                                     </div>
                                     <label className="col-form-label font-weight-bold">X1</label>
@@ -74,7 +77,7 @@ function App() {
                                     <label className="col-form-label font-weight-bold ml-3">+</label>
 
                                     <div className="col-sm-2">
-                                        <input type="number" className="form-control" placeholder="0"
+                                        <input type="number" className="form-control" placeholder="Número"
                                             value={objFunc.y} onChange={e => setObjFunc({...objFunc, y: e.target.value})}/>
                                     </div>
                                     <label className="col-form-label font-weight-bold">X2</label>
@@ -90,7 +93,7 @@ function App() {
                                             <div key={idx}>
                                                 <div className="form-row">
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="0"
+                                                        <input type="number" className="form-control" placeholder="Número"
                                                             name="x1" value={restriction.x1} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                     <label className="col-form-label font-weight-bold">X1</label>
@@ -98,7 +101,7 @@ function App() {
                                                     <label className="col-form-label font-weight-bold mr-2">+</label>
 
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="0"
+                                                        <input type="number" className="form-control" placeholder="Número"
                                                             name="x2" value={restriction.x2} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                     <label className="col-form-label font-weight-bold">X2</label>
@@ -111,7 +114,7 @@ function App() {
                                                     </div>
 
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="0"
+                                                        <input type="number" className="form-control" placeholder="Número"
                                                             name="c" value={restriction.c} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                 </div> <hr/>
@@ -120,7 +123,7 @@ function App() {
 
                                         <label className="col-form-label font-weight-bold">X1, X2 &#62;&#61; 0</label>
                                         
-                                        {counter.value <= 10 ?
+                                        {counter.value < 10 ?
                                             <button type="button" className="btn font-weight-bold text-uppercase w-100 mt-3" 
                                                 style={{backgroundColor:"#FFFFFF", color:"#000000", height:"40px"}} onClick={()=>{addRestriction()}}>Agregar Restricción</button>
                                         : null}
@@ -133,12 +136,13 @@ function App() {
                             
                         </div>
                     </div>
-                </div>
                 <div id="chart">
                     {solve  ? <Chart objFunc={objFunc}
                                      restData={restData}/>
                             : null}
-                    
+                    <button type="button" className="btn font-weight-bold text-uppercase w-30 mt-3" 
+                        style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}} onClick={()=>{window.location.reload(false)}}>Borrar</button>
+                </div>
                 </div>
             </div>
         </div>

@@ -27,13 +27,13 @@ class Chart extends Component {
 
       const aux = restData.map((element) => {
         return{
-          x: element.x1, y: element.x2, sign: element.sign, z: element.c
+          x: parseFloat(element.x1), y: parseFloat(element.x2), sign: element.sign, z: parseFloat(element.c)
         }
       })
 
       const objective = {
-        x: objFunc.type === "MIN" ? objFunc.x : -1 * objFunc.x,
-        y: objFunc.type === "MIN" ? objFunc.y : -1 * objFunc.y,
+        x: objFunc.type === "MIN" ? parseFloat(objFunc.x) : -1 * parseFloat(objFunc.x),
+        y: objFunc.type === "MIN" ? parseFloat(objFunc.y) : -1 * parseFloat(objFunc.y),
       };
       const API_URL = "https://manmixserver.vercel.app";
 
@@ -63,7 +63,7 @@ class Chart extends Component {
         /**Linea final */
         let finalLine = board.create(
           "line",
-          [-1 * resultado, objFunc.x, objFunc.y],
+          [-1 * resultado, parseFloat(objFunc.x), parseFloat(objFunc.y)],
           {
             strokeColor: "#97266d",
           }
@@ -73,14 +73,14 @@ class Chart extends Component {
 
       } catch (error) {
         if (error.response) {
-          console.log(error.response.data.message);
+          console.log("No hay solucion");
         } else {
           console.log("Ocurrió un error de comunicación, intentelo de nuevo");
         }
       }
 
       console.log(objective);
-      console.log(restData);
+      console.log(aux);
       board.unsuspendUpdate();
     }
 
@@ -94,11 +94,11 @@ class Chart extends Component {
           }}
         />
 
-        <ul class="list-group">
-          <li class="list-group-item">Región de soluciones factibles</li>
-          <li class="list-group-item list-group-item-success">Función objetivo</li>
-          <li class="list-group-item list-group-item-danger">Solución<br/>x = <br/>y = </li>
-          <li class="list-group-item list-group-item-dark">Región de soluciones no factibles</li>
+        <ul className="list-group">
+          <li className="list-group-item">Región de soluciones factibles</li>
+          <li className="list-group-item list-group-item-success">Función objetivo</li>
+          <li className="list-group-item list-group-item-danger">Solución<br/>x = <br/>y = </li>
+          <li className="list-group-item list-group-item-dark">Región de soluciones no factibles</li>
         </ul>
       </div>
     )

@@ -25,6 +25,12 @@ class Chart extends Component {
       var restY = board.create("line", [0, 0, 1], {strokeColor: "#000000"});
       var restrictionY = board.create("inequality", [restY], {inverse: false, fillColor: "#000000"});
 
+      const aux = restData.map((element) => {
+        return{
+          x: element.x1, y: element.x2, sign: element.sign, z: element.c
+        }
+      })
+
       const objective = {
         x: objFunc.type === "MIN" ? objFunc.x : -1 * objFunc.x,
         y: objFunc.type === "MIN" ? objFunc.y : -1 * objFunc.y,
@@ -36,7 +42,7 @@ class Chart extends Component {
           `${API_URL}`,
           {
             objective,
-            equations: restData,
+            equations: aux,
           },
           {
             headers: {
@@ -49,7 +55,6 @@ class Chart extends Component {
         let resultado = data.result;
         let xfinal = data.resultX;
         let yfinal = data.resultY;
-        console.log(resultado + xfinal + yfinal)
 
         /**Redondear a dos decimales */
         resultado = Math.round(100 * resultado) / 100;
@@ -73,6 +78,9 @@ class Chart extends Component {
           console.log("Ocurrió un error de comunicación, intentelo de nuevo");
         }
       }
+
+      console.log(objective);
+      console.log(restData);
       board.unsuspendUpdate();
     }
 

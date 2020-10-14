@@ -33,7 +33,7 @@ function App() {
 
         if(objFunc.x === '' || objFunc.y === '' || objFunc.type === ''){ setAlert({data: true}); return; }
 
-        if(counter.value <= 2){ setAlert({rest: true}); return; }
+        if(counter.value < 2){ setAlert({rest: true}); return; }
 
         setAlert(false);
 
@@ -69,7 +69,7 @@ function App() {
                                     <label className="col-form-label font-weight-bold">&#61;</label>
 
                                     <div className="col-sm-2">
-                                        <input type="number" className="form-control" placeholder="0"
+                                        <input type="number" className="form-control" placeholder="Número"
                                             value={objFunc.x} onChange={e => setObjFunc({...objFunc, x: e.target.value})}/>
                                     </div>
                                     <label className="col-form-label font-weight-bold">X1</label>
@@ -77,7 +77,7 @@ function App() {
                                     <label className="col-form-label font-weight-bold ml-3">+</label>
 
                                     <div className="col-sm-2">
-                                        <input type="number" className="form-control" placeholder="0"
+                                        <input type="number" className="form-control" placeholder="Número"
                                             value={objFunc.y} onChange={e => setObjFunc({...objFunc, y: e.target.value})}/>
                                     </div>
                                     <label className="col-form-label font-weight-bold">X2</label>
@@ -93,7 +93,7 @@ function App() {
                                             <div key={idx}>
                                                 <div className="form-row">
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="0"
+                                                        <input type="number" className="form-control" placeholder="Número"
                                                             name="x1" value={restriction.x1} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                     <label className="col-form-label font-weight-bold">X1</label>
@@ -101,7 +101,7 @@ function App() {
                                                     <label className="col-form-label font-weight-bold mr-2">+</label>
 
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="0"
+                                                        <input type="number" className="form-control" placeholder="Número"
                                                             name="x2" value={restriction.x2} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                     <label className="col-form-label font-weight-bold">X2</label>
@@ -114,7 +114,7 @@ function App() {
                                                     </div>
 
                                                     <div className="col-sm-2">
-                                                        <input type="number" className="form-control" placeholder="0"
+                                                        <input type="number" className="form-control" placeholder="Número"
                                                             name="c" value={restriction.c} onChange={e => onChange(idx, e)}/>
                                                     </div>
                                                 </div> <hr/>
@@ -136,13 +136,13 @@ function App() {
                             
                         </div>
                     </div>
-                </div>
                 <div id="chart">
                     {solve  ? <Chart objFunc={objFunc}
                                      restData={restData}/>
                             : null}
-                    <button type="submit" className="btn font-weight-bold text-uppercase w-100 mt-3" 
+                    <button type="button" className="btn font-weight-bold text-uppercase w-30 mt-3" 
                         style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}} onClick={()=>{window.location.reload(false)}}>Borrar</button>
+                </div>
                 </div>
             </div>
         </div>

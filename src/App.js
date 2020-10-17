@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import Chart from './components/Chart';
 
 function App() {
-    const [objFunc, setObjFunc] = useState({x: 0, y: 0, type: ''});
+    const [objFunc, setObjFunc] = useState({x: '', y: '', type: ''});
     
     const [restrictions, setRestrictions] = useState(false);
     const [restData, setRestData] = useState([{
-        x1: 0, x2: 0, sign: '', c: 0
+        x1: '', x2: '', sign: '', c: ''
     }]);
 
     const [alert, setAlert] = useState({data: false, rest: false});
@@ -15,7 +15,7 @@ function App() {
 
     const addRestriction = () => {
         setRestData([...restData, {
-            x1: 0, x2: 0, sign: '', c: 0
+            x1: '', x2: '', sign: '', c: ''
         }]);
         
         setCounter({value: counter.value+1});
@@ -32,10 +32,13 @@ function App() {
         e.preventDefault();
 
         if(objFunc.x === '' || objFunc.y === '' || objFunc.type === ''){ setAlert({data: true}); return; }
+        setAlert({data: false});
+        
+        const validation = restData.every(item => item.x1 && item.x2 && item.sign && item.c);
+        if(!validation) { setAlert({data: true}); return; }
 
         if(counter.value < 2){ setAlert({rest: true}); return; }
-
-        setAlert(false);
+        setAlert({rest: false});
 
         setSolve(true);
     }
@@ -49,9 +52,9 @@ function App() {
                             <h2 className="text-center mb-4 font-weight-bold">Método Gráfico</h2>
 
                             <hr/><form onSubmit={onSubmit}>
-                                {alert.data ? <div class="alert alert-danger" role="alert">Datos faltantes</div>
+                                {alert.data ? <div className="alert alert-danger" role="alert">Datos faltantes</div>
                                             : null}
-                                {alert.rest ? <div class="alert alert-danger" role="alert">Error, mínimo deben ser 2 restricciones</div>
+                                {alert.rest ? <div className="alert alert-danger" role="alert">Error, mínimo deben ser 2 restricciones.</div>
                                             : null}
 
                                 <div className="form-group row justify-content-center">
@@ -109,7 +112,7 @@ function App() {
                                                     <div className="col-sm-1">
                                                         <select className="custom-select"
                                                             name="sign" value={restriction.sign} onChange={e => onChange(idx, e)}>
-                                                            <option>Signo...</option> <option>&#60;&#61;</option> <option>&#62;&#61;</option> <option>&#61;</option> 
+                                                            <option>Signo...</option> <option value="<=">&#8804;</option> <option value=">=">&#8805;</option> <option>&#61;</option>
                                                         </select>
                                                     </div>
 
@@ -121,12 +124,12 @@ function App() {
                                             </div>
                                         ))}
 
-                                        <label className="col-form-label font-weight-bold">X1, X2 &#62;&#61; 0</label>
+                                        <label className="col-form-label font-weight-bold">X1, X2 &#8805; 0</label>
                                         
                                         {counter.value < 10 ?
                                             <button type="button" className="btn font-weight-bold text-uppercase w-100 mt-3" 
                                                 style={{backgroundColor:"#FFFFFF", color:"#000000", height:"40px"}} onClick={()=>{addRestriction()}}>Agregar Restricción</button>
-                                        : null}
+                                        : <div className="alert alert-primary" role="alert">Solo se permite un máximo de 10 restricciones :)</div>}
                                         
                                     </div>
                                 }
@@ -141,7 +144,7 @@ function App() {
                                      restData={restData}/>
                             : null}
                     <button type="button" className="btn font-weight-bold text-uppercase w-30 mt-3" 
-                        style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}} onClick={()=>{window.location.reload(false)}}>Borrar</button>
+                        style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}} onClick={()=>{window.location.reload(false)}}>Restaurar</button>
                 </div>
                 </div>
             </div>

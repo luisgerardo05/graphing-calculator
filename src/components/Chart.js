@@ -67,7 +67,7 @@ class Chart extends Component {
           x: xfinal, 
           y: yfinal, 
           type: objFunc.type,
-          z: (objFunc.x * xfinal) + (objFunc.y * yfinal)
+          z: resultado
         }});
 
         let finalLine = board.create(

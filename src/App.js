@@ -52,7 +52,7 @@ function App() {
                             <h2 className="text-center mb-4 font-weight-bold">Método Gráfico</h2>
 
                             <hr/><form onSubmit={onSubmit}>
-                                {alert.data ? <div className="alert alert-danger" role="alert">Datos faltantes</div>
+                                {alert.data ? <div className="alert alert-danger" role="alert">Datos faltantes.</div>
                                             : null}
                                 {alert.rest ? <div className="alert alert-danger" role="alert">Error, mínimo deben ser 2 restricciones.</div>
                                             : null}
@@ -133,6 +133,10 @@ function App() {
                                         
                                     </div>
                                 }
+                                <small id="solutionHelp" class="form-text text-muted">
+                                    ***Revisa bien TODOS los datos ingresados, no los podrás cambiar una vez que hayas presionado el botón Resolver.
+                                </small>
+                                
                                 <button type="submit" className="btn font-weight-bold text-uppercase w-100 mt-3" 
                                     style={{backgroundColor:"#000000", color:"#FFFFFF", height:"40px"}}>Resolver</button>                            
                             </form>

@@ -46,7 +46,7 @@ function App() {
     return (
         <div className="App">
             <div className="row justify-content-center">
-                <div className="col-md-10">
+                <div className="col-md-9">
                     <div className="card">
                         <div className="card-body">
                             <h2 className="text-center mb-4 font-weight-bold">Método Gráfico</h2>

@@ -117,7 +117,10 @@ class Chart extends Component {
                 <ul className="list-group">
                   <li className="list-group-item">Región de soluciones factibles.</li>
                   <li className="list-group-item list-group-item-success">
-                    <p>Solución<br/>{this.state.solution.type} Z = {this.state.solution.z}<br/>x1 = {this.state.solution.x}<br/>x2 = {this.state.solution.y}</p>
+                    Solución<br/>{this.state.solution.type} Z = {this.state.solution.z}<br/>x1 = {this.state.solution.x}<br/>x2 = {this.state.solution.y}
+                  </li>
+                  <li className="list-group-item list-group-item-danger">
+                  Coordenadas del Punto de solución<br/>({this.state.solution.x}, {this.state.solution.y})
                   </li>
                   <li className="list-group-item list-group-item-dark">Región de soluciones no factibles.</li>
                 </ul>

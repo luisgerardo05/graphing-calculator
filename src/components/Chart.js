@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import JXGBoard from 'jsxgraph-react-js'
 import Axios from 'axios';
+import PropTypes from 'prop-types'
 
 class Chart extends Component {
   constructor(props){
@@ -114,6 +115,11 @@ class Chart extends Component {
       </div>
     )
   }
+}
+
+Chart.propTypes = {
+  objFunc: PropTypes.object.isRequired,
+  restData: PropTypes.object.isRequired
 }
 
 export default Chart;

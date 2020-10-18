@@ -17,7 +17,6 @@ class Chart extends Component {
 
     let logicJS = async (board) => {
       board.suspendUpdate();
-      // var obj = board.create("line", [[parseFloat(objFunc.x), 0], [0, parseFloat(objFunc.y)]], {strokeColor: "#42f551"});
       
       restData.forEach((element) => {
         var line = board.create("line", [-1 * parseFloat(element.c), parseFloat(element.x1), parseFloat(element.x2)], {strokeColor: "#000000"});
@@ -27,11 +26,11 @@ class Chart extends Component {
 
       var restX = board.create("line", [0, 1, 0], {strokeColor: "#000000"});
       var restrictionX = board.create("inequality", [restX], {inverse: false, fillColor: "#000000"});
-      restX.setAttribute({fixed:true});
+      restX.setAttribute({fixed:true}); restrictionX.setAttribute({fixed:true});
 
       var restY = board.create("line", [0, 0, 1], {strokeColor: "#000000"});
       var restrictionY = board.create("inequality", [restY], {inverse: false, fillColor: "#000000"});
-      restY.setAttribute({fixed:true});
+      restY.setAttribute({fixed:true}); restrictionY.setAttribute({fixed:true});
 
       const aux = restData.map((element) => {
         return{
@@ -89,7 +88,6 @@ class Chart extends Component {
       } catch (error) {
         if (error.response) {
           this.setState({error: true});
-          console.log("No hay solucion");
         } else {
           console.log("Ocurrió un error de comunicación, intentelo de nuevo");
         }

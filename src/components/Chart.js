@@ -21,14 +21,17 @@ class Chart extends Component {
       
       restData.forEach((element) => {
         var line = board.create("line", [-1 * parseFloat(element.c), parseFloat(element.x1), parseFloat(element.x2)], {strokeColor: "#000000"});
-        board.create("inequality", [line], {inverse: element.sign === ">=" ? false : true, fillColor: "#000000"})
+        board.create("inequality", [line], {inverse: element.sign === ">=" ? false : true, fillColor: "#000000"});
+        line.setAttribute({fixed:true});
       });
 
       var restX = board.create("line", [0, 1, 0], {strokeColor: "#000000"});
       var restrictionX = board.create("inequality", [restX], {inverse: false, fillColor: "#000000"});
+      restX.setAttribute({fixed:true});
 
       var restY = board.create("line", [0, 0, 1], {strokeColor: "#000000"});
       var restrictionY = board.create("inequality", [restY], {inverse: false, fillColor: "#000000"});
+      restY.setAttribute({fixed:true});
 
       const aux = restData.map((element) => {
         return{
@@ -78,8 +81,10 @@ class Chart extends Component {
             strokeColor: "#42f551",
           }
         );
+        finalLine.setAttribute({fixed:true});
         
-        let puntoSolucion = board.create("point", [xfinal, yfinal]);
+        let puntoSolucion = board.create("point", [xfinal, yfinal], {name:'Punto de solucion'});
+        puntoSolucion.setAttribute({fixed:true});
 
       } catch (error) {
         if (error.response) {
@@ -103,15 +108,27 @@ class Chart extends Component {
           }}
         />
 
-        <ul className="list-group">
-          <li className="list-group-item">Región de soluciones factibles</li>
-          <li className="list-group-item list-group-item-success">
-            {this.state.error ? <p>No hay solucion</p>
-                              : <p>Solución<br/>{this.state.solution.type} Z = {this.state.solution.z}<br/>x1 = {this.state.solution.x}<br/>x2 = {this.state.solution.y}</p>
-            }
-          </li>
-          <li className="list-group-item list-group-item-dark">Región de soluciones no factibles</li>
-        </ul>
+        <div className="ml-5">
+          {this.state.error 
+            ? <ul className="list-group">
+                <li className="list-group-item list-group-item-danger">No hay solución.</li>
+              </ul>
+            : <div id="solution">
+                <ul className="list-group">
+                  <li className="list-group-item">Región de soluciones factibles.</li>
+                  <li className="list-group-item list-group-item-success">
+                    <p>Solución<br/>{this.state.solution.type} Z = {this.state.solution.z}<br/>x1 = {this.state.solution.x}<br/>x2 = {this.state.solution.y}</p>
+                  </li>
+                  <li className="list-group-item list-group-item-dark">Región de soluciones no factibles.</li>
+                </ul>
+                <small id="solutionHelp" class="form-text text-muted">
+                  ***Si no logras apreciar el punto de solución desplázate con <br/>
+                  los botones que están en la esquina inferior derecha de la gráfica.
+                </small>
+              </div>
+          }
+        </div>
+        
       </div>
     )
   }

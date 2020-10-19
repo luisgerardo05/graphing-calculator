@@ -143,7 +143,7 @@ function App() {
                             
                         </div>
                     </div>
-                <div id="chart">
+                <div className="mt-3" id="chart">
                     {solve  ? <Chart objFunc={objFunc}
                                      restData={restData}/>
                             : null}

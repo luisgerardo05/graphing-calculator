@@ -100,7 +100,7 @@ class Chart extends Component {
       <div className="row justify-content-center">
         <JXGBoard
           logic={logicJS}
-          boardAttributes={{ axis: true, boundingbox: [-1, 11, 11, -1], showCopyright: false,}}
+          boardAttributes={{ axis: true, boundingbox: [-2, 25, 25, -2], showCopyright: false}}
           style={{
             border: "3px solid black"
           }}
@@ -123,8 +123,17 @@ class Chart extends Component {
                   <li className="list-group-item list-group-item-dark">Región de soluciones no factibles.</li>
                 </ul>
                 <small id="solutionHelp" class="form-text text-muted">
-                  ***Si no logras apreciar el punto de solución desplázate con <br/>
-                  los botones que están en la esquina inferior derecha de la gráfica.
+                  <p>***Si no se logra apreciar el punto de solución se puede desplazar <br/>con los botones que están en la esquina inferior derecha de la gráfica.</p>
+
+                  <p>
+                    &#8722; &nbsp;&nbsp;&nbsp;Alejarse<br/>
+                    &#8728; &nbsp;&nbsp;&nbsp;&nbsp;Regresar a gráfica original<br/>
+                    &#43; &nbsp;&nbsp;&nbsp;Acercarse<br/>
+                    &#8592; &nbsp;&nbsp;Desplazarse hacia la izquierda<br/>
+                    &#8595; &nbsp;&nbsp;&nbsp;&nbsp;Desplazarse hacia abajo<br/>
+                    &#8593; &nbsp;&nbsp;&nbsp;&nbsp;Desplazarse hacia arriba<br/>
+                    &#8594; &nbsp;&nbsp;Desplazarse hacia la derecha
+                  </p>
                 </small>
               </div>
           }
